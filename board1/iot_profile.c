@@ -19,7 +19,6 @@
 #include "hi_stdlib.h"
 #include "stdio.h"
 #include "hi_mem.h"
-#include "iot_main.h"
 #include "iot_profile.h"
 #include "air780eg/air780eg.h"
 #include "iot_config.h"
@@ -27,137 +26,137 @@
 #ifdef cJSON
 
 // format the report data to json string mode
-// static cJSON *FormatProfileValue(IoTProfileKV *kv)
-// {
-//     cJSON  *ret = NULL;
-//     switch (kv->type) {
-//         case EN_IOT_DATATYPE_INT:
-//             ret = cJSON_CreateNumber(kv->iValue);
-//             break;
-//         case EN_IOT_DATATYPE_LONG:
-//             ret = cJSON_CreateNumber((double)(*(long *)kv->value));
-//             break;
-//         case EN_IOT_DATATYPE_STRING:
-//             ret = cJSON_CreateString((const char *)kv->value);
-//             break;
-//         default:
-//             break;
-//     }
-//     return ret;
-// }
+static cJSON *FormatProfileValue(IoTProfileKV *kv)
+{
+    cJSON  *ret = NULL;
+    switch (kv->type) {
+        case EN_IOT_DATATYPE_INT:
+            ret = cJSON_CreateNumber(kv->iValue);
+            break;
+        case EN_IOT_DATATYPE_LONG:
+            ret = cJSON_CreateNumber((double)(*(long *)kv->value));
+            break;
+        case EN_IOT_DATATYPE_STRING:
+            ret = cJSON_CreateString((const char *)kv->value);
+            break;
+        default:
+            break;
+    }
+    return ret;
+}
 
-// static cJSON *MakeKvs(IoTProfileKV *kvlst)
-// {
-//     cJSON *root;
-//     cJSON *kv;
-//     IoTProfileKV *kvInfo;
+static cJSON *MakeKvs(IoTProfileKV *kvlst)
+{
+    cJSON *root;
+    cJSON *kv;
+    IoTProfileKV *kvInfo;
 
-//     // build a root node
-//     root = cJSON_CreateObject();
-//     if (root == NULL) {
-//         return root;
-//     }
+    // build a root node
+    root = cJSON_CreateObject();
+    if (root == NULL) {
+        return root;
+    }
 
-//     // add all the property to the properties
-//     kvInfo = kvlst;
-//     while (kvInfo != NULL) {
-//         kv = FormatProfileValue(kvInfo);
-//         if (kv == NULL) {
-//             if (root != NULL) {
-//                 cJSON_Delete(root);
-//                 root = NULL;
-//             }
-//             return root;
-//         }
+    // add all the property to the properties
+    kvInfo = kvlst;
+    while (kvInfo != NULL) {
+        kv = FormatProfileValue(kvInfo);
+        if (kv == NULL) {
+            if (root != NULL) {
+                cJSON_Delete(root);
+                root = NULL;
+            }
+            return root;
+        }
 
-//         cJSON_AddItemToObject(root, kvInfo->key, kv);
-//         kvInfo = kvInfo->nxt;
-//     }
-//     // OK, now we return it
-//     return root;
-// }
+        cJSON_AddItemToObject(root, kvInfo->key, kv);
+        kvInfo = kvInfo->nxt;
+    }
+    // OK, now we return it
+    return root;
+}
 
 #define CN_PROFILE_SERVICE_KEY_SERVICEID "service_id"
 #define CN_PROFILE_SERVICE_KEY_PROPERTIIES "properties"
 #define CN_PROFILE_SERVICE_KEY_EVENTTIME "event_time"
 #define CN_PROFILE_KEY_SERVICES "services"
-// static cJSON *MakeService(IoTProfileService *serviceInfo)
-// {
-//     cJSON *root;
-//     cJSON *serviceID;
-//     cJSON *properties;
-//     cJSON *eventTime;
+static cJSON *MakeService(IoTProfileService *serviceInfo)
+{
+    cJSON *root;
+    cJSON *serviceID;
+    cJSON *properties;
+    cJSON *eventTime;
 
-//     // build a root node
-//     root = cJSON_CreateObject();
-//     if (root == NULL) {
-//         return root;
-//     }
+    // build a root node
+    root = cJSON_CreateObject();
+    if (root == NULL) {
+        return root;
+    }
 
-//     // add the serviceID node to the root node
-//     serviceID = cJSON_CreateString(serviceInfo->serviceID);
-//     if (serviceID == NULL) {
-//         if (root != NULL) {
-//             cJSON_Delete(root);
-//             root = NULL;
-//         }
-//         return root;
-//     }
-//     cJSON_AddItemToObjectCS(root, CN_PROFILE_SERVICE_KEY_SERVICEID, serviceID);
+    // add the serviceID node to the root node
+    serviceID = cJSON_CreateString(serviceInfo->serviceID);
+    if (serviceID == NULL) {
+        if (root != NULL) {
+            cJSON_Delete(root);
+            root = NULL;
+        }
+        return root;
+    }
+    cJSON_AddItemToObjectCS(root, CN_PROFILE_SERVICE_KEY_SERVICEID, serviceID);
 
-//     // add the properties node to the root
-//     properties = MakeKvs(serviceInfo->serviceProperty);
-//     if (properties == NULL) {
-//         if (root != NULL) {
-//             cJSON_Delete(root);
-//             cJSON_Delete(properties);
-//             root = NULL;
-//         }
-//         return root;
-//     }
-//     cJSON_AddItemToObjectCS(root, CN_PROFILE_SERVICE_KEY_PROPERTIIES, properties);
-//     // add the event time (optional) to the root
-//     if (serviceInfo->eventTime != NULL) {
-//         eventTime = cJSON_CreateString(serviceInfo->eventTime);
-//         if (eventTime == NULL) {
-//             if (root != NULL) {
-//                 cJSON_Delete(root);
-//                 root = NULL;
-//             }
-//             return root;
-//         }
-//         cJSON_AddItemToObjectCS(root, CN_PROFILE_SERVICE_KEY_EVENTTIME, eventTime);
-//     }
-//     // OK, now we return it
-//     return root;
-// }
-// // {"id":"1688453741812","params":{"led":{"value":true}}}
+    // add the properties node to the root
+    properties = MakeKvs(serviceInfo->serviceProperty);
+    if (properties == NULL) {
+        if (root != NULL) {
+            cJSON_Delete(root);
+            cJSON_Delete(properties);
+            root = NULL;
+        }
+        return root;
+    }
+    cJSON_AddItemToObjectCS(root, CN_PROFILE_SERVICE_KEY_PROPERTIIES, properties);
+    // add the event time (optional) to the root
+    if (serviceInfo->eventTime != NULL) {
+        eventTime = cJSON_CreateString(serviceInfo->eventTime);
+        if (eventTime == NULL) {
+            if (root != NULL) {
+                cJSON_Delete(root);
+                root = NULL;
+            }
+            return root;
+        }
+        cJSON_AddItemToObjectCS(root, CN_PROFILE_SERVICE_KEY_EVENTTIME, eventTime);
+    }
+    // OK, now we return it
+    return root;
+}
+// {"id":"1688453741812","params":{"led":{"value":true}}}
 
-// static cJSON *MakeServices(IoTProfileService *serviceInfo)
-// {
-//     cJSON *services = NULL;
-//     cJSON *service;
-//     IoTProfileService  *serviceTmp;
+static cJSON *MakeServices(IoTProfileService *serviceInfo)
+{
+    cJSON *services = NULL;
+    cJSON *service;
+    IoTProfileService  *serviceTmp;
 
-//     // create the services array node
-//     services = cJSON_CreateArray();
-//     if (services == NULL) {
-//         return services;
-//     }
+    // create the services array node
+    services = cJSON_CreateArray();
+    if (services == NULL) {
+        return services;
+    }
 
-//     serviceTmp = serviceInfo;
-//     while (serviceTmp != NULL) {
-//         service = MakeService(serviceTmp);
-//         if (service == NULL) {
-//             return services;
-//         }
-//         cJSON_AddItemToArray(services, service);
-//         serviceTmp = serviceTmp->nxt;
-//     }
+    serviceTmp = serviceInfo;
+    while (serviceTmp != NULL) {
+        service = MakeService(serviceTmp);
+        if (service == NULL) {
+            return services;
+        }
+        cJSON_AddItemToArray(services, service);
+        serviceTmp = serviceTmp->nxt;
+    }
 
-//     // now we return the services
-//     return services;
-// }
+    // now we return the services
+    return services;
+}
 
 // use this function to make a topic to publish
 // if request_id  is needed depends on the fmt
@@ -186,114 +185,114 @@ static char *MakeTopic(const char *fmt, const char *deviceId, const char *reques
     return ret;
 }
 
-// #define CN_PROFILE_CMDRESP_KEY_RETCODE    "result_code"
-// #define CN_PROFILE_CMDRESP_KEY_RESPNAME    "response_name"
-// #define CN_PROFILE_CMDRESP_KEY_PARAS    "paras"
-// static char *MakeProfileCmdResp(IoTCmdResp *payload)
-// {
-//     char *ret = NULL;
-//     cJSON *root;
-//     cJSON *retCode;
-//     cJSON *respName;
-//     cJSON *paras;
+#define CN_PROFILE_CMDRESP_KEY_RETCODE    "result_code"
+#define CN_PROFILE_CMDRESP_KEY_RESPNAME    "response_name"
+#define CN_PROFILE_CMDRESP_KEY_PARAS    "paras"
+static char *MakeProfileCmdResp(IoTCmdResp *payload)
+{
+    char *ret = NULL;
+    cJSON *root;
+    cJSON *retCode;
+    cJSON *respName;
+    cJSON *paras;
 
-//     // create the root node
-//     root = cJSON_CreateObject();
-//     if (root == NULL) {
-//         return ret;
-//     }
+    // create the root node
+    root = cJSON_CreateObject();
+    if (root == NULL) {
+        return ret;
+    }
 
-//     // create retcode and retdesc and add it to the root
-//     retCode = cJSON_CreateNumber(payload->retCode);
-//     if (retCode == NULL) {
-//         if (root != NULL) {
-//             cJSON_Delete(root);
-//         }
-//         return ret;
-//     }
-//     cJSON_AddItemToObjectCS(root, CN_PROFILE_CMDRESP_KEY_RETCODE, retCode);
+    // create retcode and retdesc and add it to the root
+    retCode = cJSON_CreateNumber(payload->retCode);
+    if (retCode == NULL) {
+        if (root != NULL) {
+            cJSON_Delete(root);
+        }
+        return ret;
+    }
+    cJSON_AddItemToObjectCS(root, CN_PROFILE_CMDRESP_KEY_RETCODE, retCode);
 
-//     if (payload->respName != NULL) {
-//         respName = cJSON_CreateString(payload->respName);
-//         if (respName == NULL) {
-//             if (root != NULL) {
-//                 cJSON_Delete(root);
-//             }
-//             return ret;
-//         }
-//         cJSON_AddItemToObjectCS(root, CN_PROFILE_CMDRESP_KEY_RESPNAME, respName);
-//     }
+    if (payload->respName != NULL) {
+        respName = cJSON_CreateString(payload->respName);
+        if (respName == NULL) {
+            if (root != NULL) {
+                cJSON_Delete(root);
+            }
+            return ret;
+        }
+        cJSON_AddItemToObjectCS(root, CN_PROFILE_CMDRESP_KEY_RESPNAME, respName);
+    }
 
-//     if (payload->paras != NULL) {
-//         paras = MakeKvs(payload->paras);
-//         if (paras == NULL) {
-//             if (root != NULL) {
-//                 cJSON_Delete(root);
-//             }
-//             return ret;
-//         }
-//         cJSON_AddItemToObjectCS(root, CN_PROFILE_CMDRESP_KEY_PARAS, paras);
-//     }
+    if (payload->paras != NULL) {
+        paras = MakeKvs(payload->paras);
+        if (paras == NULL) {
+            if (root != NULL) {
+                cJSON_Delete(root);
+            }
+            return ret;
+        }
+        cJSON_AddItemToObjectCS(root, CN_PROFILE_CMDRESP_KEY_PARAS, paras);
+    }
 
-//     // OK, now we make it to a buffer
-//     ret = cJSON_PrintUnformatted(root);
-//     cJSON_Delete(root);
-//     return ret;
-// }
+    // OK, now we make it to a buffer
+    ret = cJSON_PrintUnformatted(root);
+    cJSON_Delete(root);
+    return ret;
+}
 
-// #define CN_PROFILE_TOPICFMT_CMDRESP    "$oc/devices/%s/sys/commands/response/request_id=%s"
-// int IoTProfileCmdResp(char *deviceID, IoTCmdResp *payload)
-// {
-//     int ret = -1;
-//     char *topic;
-//     char *msg;
+#define CN_PROFILE_TOPICFMT_CMDRESP    "$oc/devices/%s/sys/commands/response/request_id=%s"
+int IoTProfileCmdResp(char *deviceID, IoTCmdResp *payload)
+{
+    int ret = -1;
+    char *topic;
+    char *msg;
 
-//     if ((deviceID == NULL) || (payload == NULL) || (payload->requestID == NULL)) {
-//         return ret;
-//     }
+    if ((deviceID == NULL) || (payload == NULL) || (payload->requestID == NULL)) {
+        return ret;
+    }
 
-//     topic = MakeTopic(CN_PROFILE_TOPICFMT_CMDRESP, deviceID, payload->requestID);
-//     if (topic == NULL) {
-//         return ret;
-//     }
-//     msg = MakeProfileCmdResp(payload);
-//     if ((topic != NULL) && (msg != NULL)) {
-//         ret = IotSendMsg(0, topic, msg);
-//     }
+    topic = MakeTopic(CN_PROFILE_TOPICFMT_CMDRESP, deviceID, payload->requestID);
+    if (topic == NULL) {
+        return ret;
+    }
+    msg = MakeProfileCmdResp(payload);
+    if ((topic != NULL) && (msg != NULL)) {
+        ret = IotSendMsg(0, topic, msg);
+    }
 
-//     hi_free(0, topic);
-//     cJSON_free(msg);
-//     return ret;
-// }
+    hi_free(0, topic);
+    cJSON_free(msg);
+    return ret;
+}
 
-// // static char *MakeProfilePropertyReport(IoTProfileService *payload)
-// char *MakeProfilePropertyReport(IoTProfileService *payload)
-// {
-//     char *ret = NULL;
-//     cJSON *root;
-//     cJSON *services;
+// static char *MakeProfilePropertyReport(IoTProfileService *payload)
+char *MakeProfilePropertyReport(IoTProfileService *payload)
+{
+    char *ret = NULL;
+    cJSON *root;
+    cJSON *services;
 
-//     // create the root node
-//     root = cJSON_CreateObject();
-//     if (root == NULL) {
-//         return ret;
-//     }
+    // create the root node
+    root = cJSON_CreateObject();
+    if (root == NULL) {
+        return ret;
+    }
 
-//     // create the services array node to the root
-//     services = MakeServices(payload);
-//     if (services == NULL) {
-//         if (root != NULL) {
-//             cJSON_Delete(root);
-//         }
-//         return ret;
-//     }
-//     cJSON_AddItemToObjectCS(root, CN_PROFILE_KEY_SERVICES, services);
+    // create the services array node to the root
+    services = MakeServices(payload);
+    if (services == NULL) {
+        if (root != NULL) {
+            cJSON_Delete(root);
+        }
+        return ret;
+    }
+    cJSON_AddItemToObjectCS(root, CN_PROFILE_KEY_SERVICES, services);
 
-//     // OK, now we make it to a buffer
-//     ret = cJSON_PrintUnformatted(root);
-//     cJSON_Delete(root);
-//     return ret;
-// }
+    // OK, now we make it to a buffer
+    ret = cJSON_PrintUnformatted(root);
+    cJSON_Delete(root);
+    return ret;
+}
 
 static cJSON *FormatProfileValue(IoTProfileKV *kv)
 {
@@ -465,66 +464,66 @@ int IoTProfilePropertyReport(char *deviceID, IoTProfileService *payload)
     return ret;
 }
 
-// static IoTProfileKV *GetPropertys(cJSON *propertys)
-// {
-//     cJSON *t_cjpropertytmp;
-//     IoTProfileKV *t_property;
-//     t_cjpropertytmp = propertys->child;
-//     while (t_cjpropertytmp != NULL)
-//     {
-//         printf("222\n");
-//         IoTProfileKV *t_propertytmp = hi_malloc(0, sizeof(IoTProfileKV));
-//         t_propertytmp->key = t_cjpropertytmp->string;
-//         switch (t_cjpropertytmp->type)
-//         {
-//             case cJSON_Number:
-//                 t_propertytmp->type = EN_IOT_DATATYPE_INT;
-//                 t_propertytmp->iValue = t_cjpropertytmp->valueint;
-//                 break;
-//             case cJSON_String:
-//                 t_propertytmp->type = EN_IOT_DATATYPE_STRING;
-//                 t_propertytmp->value = t_cjpropertytmp->valuestring;
-//         }
-//         t_propertytmp->nxt = NULL;
-//         if (t_property != NULL) {
-//             t_propertytmp->nxt = t_property;
-//             t_property = t_propertytmp;
-//         } else{
-//             t_property = t_propertytmp;
-//         }
-//         printf("cj1:%d\n", (int)t_cjpropertytmp);
-//         t_cjpropertytmp = t_cjpropertytmp->next;    
-//         printf("cj2:%d\n", (int)t_cjpropertytmp);
-//     }
-//     return t_property;
-// }
+static IoTProfileKV *GetPropertys(cJSON *propertys)
+{
+    cJSON *t_cjpropertytmp;
+    IoTProfileKV *t_property;
+    t_cjpropertytmp = propertys->child;
+    while (t_cjpropertytmp != NULL)
+    {
+        printf("222\n");
+        IoTProfileKV *t_propertytmp = hi_malloc(0, sizeof(IoTProfileKV));
+        t_propertytmp->key = t_cjpropertytmp->string;
+        switch (t_cjpropertytmp->type)
+        {
+            case cJSON_Number:
+                t_propertytmp->type = EN_IOT_DATATYPE_INT;
+                t_propertytmp->iValue = t_cjpropertytmp->valueint;
+                break;
+            case cJSON_String:
+                t_propertytmp->type = EN_IOT_DATATYPE_STRING;
+                t_propertytmp->value = t_cjpropertytmp->valuestring;
+        }
+        t_propertytmp->nxt = NULL;
+        if (t_property != NULL) {
+            t_propertytmp->nxt = t_property;
+            t_property = t_propertytmp;
+        } else{
+            t_property = t_propertytmp;
+        }
+        printf("cj1:%d\n", (int)t_cjpropertytmp);
+        t_cjpropertytmp = t_cjpropertytmp->next;    
+        printf("cj2:%d\n", (int)t_cjpropertytmp);
+    }
+    return t_property;
+}
 
-// static IoTProfileService *GetServers(cJSON *cjService)
-// {
-//     IoTProfileService *t_service = NULL;
-//     IoTProfileKV *t_property;
-//     cJSON *t_cjServiceid, *t_cjservicetmp, *t_cjpropertys;
-//     t_cjservicetmp = cjService;
-//     while (t_cjservicetmp != NULL)
-//     {
-//         t_cjServiceid = t_cjservicetmp->child;
-//         t_cjpropertys = t_cjServiceid->next;
-//         IoTProfileService *t_servicetmp = hi_malloc(0, sizeof(IoTProfileService));
-//         printf("111\n");
-//         t_servicetmp->serviceID = t_cjServiceid->valuestring;
-//         t_servicetmp->serviceProperty = GetPropertys(t_cjpropertys);
-//         t_servicetmp->nxt = NULL;
-//         if (t_service != NULL) {
-//             t_servicetmp->nxt = t_service;
-//             t_service = t_servicetmp;
-//         } else{
-//             t_service = t_servicetmp;
-//         }
-//         t_cjservicetmp = t_cjservicetmp->next;
-//         printf("cj3:%d", (int)t_cjservicetmp);
-//     }
-//     return t_service;
-// }
+static IoTProfileService *GetServers(cJSON *cjService)
+{
+    IoTProfileService *t_service = NULL;
+    IoTProfileKV *t_property;
+    cJSON *t_cjServiceid, *t_cjservicetmp, *t_cjpropertys;
+    t_cjservicetmp = cjService;
+    while (t_cjservicetmp != NULL)
+    {
+        t_cjServiceid = t_cjservicetmp->child;
+        t_cjpropertys = t_cjServiceid->next;
+        IoTProfileService *t_servicetmp = hi_malloc(0, sizeof(IoTProfileService));
+        printf("111\n");
+        t_servicetmp->serviceID = t_cjServiceid->valuestring;
+        t_servicetmp->serviceProperty = GetPropertys(t_cjpropertys);
+        t_servicetmp->nxt = NULL;
+        if (t_service != NULL) {
+            t_servicetmp->nxt = t_service;
+            t_service = t_servicetmp;
+        } else{
+            t_service = t_servicetmp;
+        }
+        t_cjservicetmp = t_cjservicetmp->next;
+        printf("cj3:%d", (int)t_cjservicetmp);
+    }
+    return t_service;
+}
 
 cJSON *IotProfileParse(char *payload)
 {

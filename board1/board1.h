@@ -20,7 +20,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "iot_config.h"
-#include "iot_main.h"
 #include "iot_profile.h"
 #include "ohos_init.h"
 #include "cmsis_os2.h"
