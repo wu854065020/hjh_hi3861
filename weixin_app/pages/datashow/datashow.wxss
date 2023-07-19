@@ -1,0 +1,18 @@
+
+.content{
+  display: flex;
+  flex-direction: row;
+  padding-left: 50rpx;
+  align-items: center;
+  margin: 50rpx;
+}
+
+.img{
+  width: 100rpx;
+  height: 100rpx;
+  margin: 20rpx;
+}
+
+.text{
+  font-size: 40rpx;
+}

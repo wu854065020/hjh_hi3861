@@ -1,0 +1,26 @@
+<view>
+  <view class="content">
+    <image class="img" src="/image/在线.png"></image>
+    <view class="text">在线状态：{{online_state}}</view>
+  </view>
+  <view class="content">
+    <image class="img" src="/image/电池.png"></image>
+    <view class="text">电量：{{bat}} %</view>
+  </view>
+  <!-- <view class="content">
+    <image class="img" src="/image/血氧.png"></image>
+    <view class="text">血氧值：{{sp02data}}%</view>
+  </view> -->
+  <view class="content">
+    <image class="img" src="/image/报警灯.png"></image>
+    <view class="text" bindtap="getsettings">报警阈值设置</view>
+  </view>
+  <view class="content">
+    <image class="img" src="/image/铃铛.png"></image>
+    <view class="text" bindtap="setwarn">给终端发提醒</view>
+  </view>
+  <view class="content">
+    <image class="img" src="/image/时间.png"></image>
+    <view class="text" bindtap="gethistory">历史提示记录</view>
+  </view>
+</view>

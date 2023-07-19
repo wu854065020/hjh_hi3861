@@ -1,0 +1,12 @@
+<view class="btn-area">
+  <button class="text" type="primary" bindtap="bind1">到点要吃饭哦</button>
+</view>
+<view class="btn-area">
+  <button class="text" type="primary" bindtap="bind2">按时吃药</button>
+</view>
+<view class="btn-area">
+  <button class="text" type="primary" bindtap="bind3">天气凉，多添衣</button>
+</view>
+<view class="btn-area">
+  <button class="text" type="primary" bindtap="bind4">天热，防暑降温！</button>
+</view>

@@ -1,0 +1,13 @@
+<view>
+  <view class = "text">账号：{{username}}</view>
+  <view class = "text">绑定状态：{{bind_state}}</view>
+  <view class="btn-area">
+    <button class="text" type="primary" bindtap="bind">设备绑定</button>
+  </view>
+  <view class="btn-area">
+    <button class="text" type="primary" bindtap="messagenum">绑定短信号码</button>
+  </view>
+  <view class="btn-area">
+    <button class="text" type="primary" bindtap="outsign">退出登录</button>
+  </view>
+</view>

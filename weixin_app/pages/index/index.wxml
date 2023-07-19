@@ -1,0 +1,29 @@
+<!-- 
+  bindinput:输入产生变化时候的回调函数，在js中定义 ""
+  value:指向输入存储的变量名称，在js中定义
+ -->
+
+<view class="container">
+  <view class="bg-fff p-lr30 border-t">
+    <!-- <view class="ipt-wrap border-b flex ai-center">
+      <label for="" class="font14">设备ID</label>
+      <input type="text" class="ml40 flex1" maxlength="64" placeholder="    请输入device_id" value="{{domain}}" bindinput="getDomain"></input>
+    </view> -->
+    <view class="ipt-wrap border-b flex ai-center">
+      <label for="" class="font14">产品ID</label>
+      <input type="text" class="ml40 flex1" maxlength="64" placeholder="请输入产品ID" value="{{domain}}" bindinput="getDomain"></input>
+    </view>
+     <view class="ipt-wrap border-b flex ai-center">
+      <label for="" class="font14">设备名</label>
+      <input type="text" class="ml40 flex1" maxlength="64" placeholder="请输入设备名" value="{{name}}" bindinput="getName"></input>
+    </view>
+    <view class="ipt-wrap border-b flex ai-center">
+      <label for="" class="font14">鉴权参数</label>
+      <input type="text" class="ml40 flex1" maxlength="200" placeholder="请输入鉴权字符串" value="{{passwd}}" bindinput="getPassword"></input>
+    </view>
+  </view>
+</view>
+<button type = 'primary' bindtap="getinfo2">绑定</button>
+<view class="tosign">
+  <view bindtap="cancel" >取消绑定</view>
+</view>

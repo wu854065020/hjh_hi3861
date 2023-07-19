@@ -1,0 +1,21 @@
+<view class="top">
+    <map wx:if="{{markersStatus}}"
+      id="mapId"
+      style="height:100vh;width:100%;"
+      scale="{{scale}}"
+      circles="{{circles}}"
+      longitude="{{longitude_temp}}"
+      latitude="{{latitude_temp}}"
+      markers="{{markers}}"
+      polyline="{{polyline}}"
+      bindmarkertap="markertap"
+      bindcallouttap="callouttap"
+      show-location>
+    </map>
+</view>
+
+
+<view bindtap='adddetial'>
+ <image class="add_icon" src="../../image/刷新.png"></image>
+</view>
+

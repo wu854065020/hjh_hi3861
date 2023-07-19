@@ -1,0 +1,15 @@
+<view class="line">
+  <view>手机号</view>
+  <view><input type="text" placeholder="请输入手机号" bindinput="getUserName"></input></view>
+</view>
+<view class="line">
+  <view>用户名</view>
+  <view><input type="text" placeholder="请输入用户名" bindinput="getAccount"></input></view>
+</view>
+<view class="line">
+  <view>密码</view>
+  <view><input type="password" placeholder="请输入密码" bindinput="getPassword"></input></view>
+</view>
+<view class="btn">
+<button type="primary" bindtap="sign">注册</button>
+</view>

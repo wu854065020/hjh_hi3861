@@ -1,0 +1,34 @@
+
+<picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+  <view class="picker">
+    定位报警阈值：{{array[index]}}
+  </view>
+</picker>
+<!-- <picker bindchange="bindPickerChange2" value="{{index2}}" range="{{array2}}">
+  <view class="picker">
+    血氧报警阈值：{{array2[index2]}}
+  </view>
+</picker> -->
+
+<map
+  id="mapId2"
+  style="height:100vh;width:100%;"
+  bindregionchange="regionchange"
+  circles="{{circles}}"
+  longitude="{{circles[0].longitude}}"
+  latitude="{{circles[0].latitude}}"
+  >
+</map>
+
+<view bindtap='sure'>
+ <image class="add_icon" src="../../image/确认.png"></image>
+</view>
+
+  <!-- style="height:100vh;width:100%;"
+      scale="{{scale}}"
+      circles="{{circles}}"
+      longitude="{{longitude_temp}}"
+      latitude="{{latitude_temp}}"
+      markers="{{markers}}"
+      polyline="{{polyline}}"
+      show-location -->

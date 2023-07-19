@@ -1,0 +1,4 @@
+<view>
+  <view class="history" wx:for="{{history_data}}" wx:for-item="data">*{{data.time}} {{data.data}}</view>
+  <view class="history" wx:if="{{history_data.length == 0}}">暂无搜索记录</view>
+</view>

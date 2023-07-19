@@ -1,0 +1,7 @@
+<view class="line">
+  <view>手机号</view>
+  <view><input type="text" placeholder="请输入手机号" bindinput="getMobile" value="{{message_mobile}}"></input></view>
+</view>
+<view class="btn">
+<button type="primary" bindtap="sign">绑定</button>
+</view>

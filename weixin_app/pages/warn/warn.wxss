@@ -1,0 +1,13 @@
+.btn-area{
+  /* margin: auto; */
+  /* margin-top: 40rpx; */
+  margin: 100rpx;
+  display:flex;
+  /* justify-content:center;
+  align-items: center;
+  border:2px solid;
+  border-radius: 8px;
+  height:70rpx;
+  width:300rpx; */
+  /* box-shadow:8px 8px 20px 1px #d1d4d4; */
+}

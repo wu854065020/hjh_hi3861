@@ -1,0 +1,19 @@
+input{
+  margin: 20rpx;
+  padding-left: 20rpx;
+  height: 80rpx;
+  border: 1rpx solid #c3c3c3;
+  width: 180px;
+}
+view{
+  margin: 20rpx;
+}
+.btn{
+  display: flex;
+}
+
+.line{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
