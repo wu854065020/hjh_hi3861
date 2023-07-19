@@ -1,0 +1,58 @@
+# Copyright (c) 2022 HiSilicon (Shanghai) Technologies CO., LIMITED.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+static_library("BOARD1") {
+  sources = [
+    # "//device/hisilicon/hispark_pegasus/sdk_liteos/platform/drivers/spi/hi_spi.c",
+    # "//device/hisilicon/hispark_pegasus/sdk_liteos/platform/drivers/spi/spi.c",
+    "board1.c",
+    "cjson_init.c",
+    "hal_iot_gpio_ex.c",
+    "iot_profile.c",
+    "wifi_connecter.c",
+    "key/key.c",
+    "adc/hal_iot_adc.c",
+    "air780eg/air780eg.c",
+    "menu/menu.c",
+    "st7789/st7789.c",
+    "st7789/fonts.c",
+    "community/community.c",
+    "task/time_task.c",
+    "algorithm/crc.c",
+    "task/ui_task.c",
+    "task/community_task.c",
+    "task/air_task.c",
+    "task/tumble_detect_task.c",
+    "task/wifi_task.c",
+    "mpu6050/inv_mpu.c",
+    "mpu6050/inv_mpu_dmp_motion_driver.c",
+    "mpu6050/mpu6050.c",
+    "ringbuffer/ringbuffer.c",
+    "packge.c"
+  ]
+
+  include_dirs = [
+    "./",
+    "//utils/native/lite/kv_store/src/kvstore_common",
+    "//utils/native/lite/include",
+    "//kernel/liteos_m/kal/cmsis",
+    "//base/iot_hardware/peripheral/interfaces/kits",
+    "//device/soc/hisilicon/hi3861v100/sdk_liteos/third_party/lwip_sack/include/lwip",
+    "//third_party/cJSON",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/third_party/mbedtls/include/mbedtls",
+    "//foundation/communication/wifi_lite/interfaces/wifiservice",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/third_party/paho.mqtt.c/include/mqtt",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/third_party/libcoap/include/coap2",
+    "//device/hisilicon/hispark_pegasus/sdk_liteos/include",
+  ]
+}
